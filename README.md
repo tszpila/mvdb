@@ -64,6 +64,15 @@ Just run watcher by typing:
 npm run watch
 ```
 
+## Linting
+
+To check if there are any code formatting issues
+and fix simple issues automatically you can run:
+
+```
+npm run lint
+```
+
 ## Serving
 
 ```

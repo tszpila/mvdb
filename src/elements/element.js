@@ -2,23 +2,33 @@
  * Base Element class, add abstraction to DOM nodes.
  *
  * @param {string} [name=div] Element (node) name.
- * @param {string|object} [textOrAttributes] Text value or attributes map.
- * @param {string} [text] Text if not passed as second argument.
+ * @param {string|object|Element} [textChildOrAttributes] Text value or Element or attributes map.
+ * @param {string|Element} [textOrChild] Text or Element if not passed as second argument.
  */
 export default class Element {
-    constructor(name = 'div', textOrAttributes, text) {
+    constructor(name = 'div', textChildOrAttributes, textOrChild) {
         this.name = name;
-        if (typeof textOrAttributes === 'string') {
-            this.text = textOrAttributes;
+        if (typeof textChildOrAttributes === 'string') {
+            this.text = textChildOrAttributes;
+        } else if (textChildOrAttributes instanceof Element) {
+            this.child = textChildOrAttributes;
         } else {
-            this.text = text;
-            this.attributes = textOrAttributes;
+            if (textOrChild instanceof Element) {
+                this.child = textOrChild;
+            } else {
+                this.text = textOrChild;
+            }
+            this.attributes = textChildOrAttributes;
         }
     }
 
     render() {
         const element = document.createElement(this.name);
-        element.innerText = this.text || '';
+        if (this.child) {
+            element.appendChild(this.child.render());
+        } else {
+            element.innerText = this.text || '';
+        }
         if (this.attributes) {
             Object.keys(this.attributes).forEach((attribute) => {
                 const value = this.attributes[attribute];

@@ -115,4 +115,49 @@ describe('Element', () => {
             expect(node.classList.contains('class-2')).to.be.equal(true);
         }
     });
+
+    it('renders element passed to element', () => {
+        {
+            const child = new Element('span');
+            const element = new Element('div', child);
+            const node = element.render();
+            expect(node.childNodes).to.have.length(1);
+            expect(document.createElement('span').isEqualNode(node.firstChild));
+        }
+        {
+            const child = new Element('em');
+            const element = new Element('a', child);
+            const node = element.render();
+            expect(node.childNodes).to.have.length(1);
+            expect(document.createElement('em').isEqualNode(node.firstChild));
+        }
+    });
+
+    it('renders element and attributes passed to element', () => {
+        {
+            const child = new Element('em');
+            const element = new Element('div', {
+                href: '#test',
+                title: 'This is important link',
+            }, child);
+            const node = element.render();
+            expect(node.childNodes).to.have.length(1);
+            expect(document.createElement('em').isEqualNode(node.firstChild));
+            expect(node.getAttribute('title')).to.be.equal('This is important link');
+            expect(node.getAttribute('href')).to.be.equal('#test');
+        }
+        {
+            const child = new Element('span');
+            const element = new Element('div', {
+                className: 'class-1 class-2',
+                id: 'my-div',
+            }, child);
+            const node = element.render();
+            expect(node.childNodes).to.have.length(1);
+            expect(document.createElement('span').isEqualNode(node.firstChild));
+            expect(node.classList).to.have.length(2);
+            expect(node.classList.contains('class-1')).to.be.equal(true);
+            expect(node.classList.contains('class-2')).to.be.equal(true);
+        }
+    });
 });

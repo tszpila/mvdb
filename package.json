@@ -11,7 +11,7 @@
     "serve": "node index.js",
     "compile": "babel src/app.js -o dist/app.js --source-maps",
     "watch": "babel src/app.js -o dist/app.js -w --source-maps",
-    "lint": "eslint --fix --ext js src/",
+    "lint": "eslint --fix --ext js src/ test/",
     "test": "mocha"
   },
   "devDependencies": {
@@ -22,6 +22,8 @@
     "eslint": "^4.12.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
+    "jsdom": "^11.5.1",
+    "jsdom-global": "^3.0.2",
     "mocha": "^4.0.1"
   },
   "dependencies": {

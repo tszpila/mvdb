@@ -179,7 +179,8 @@ describe('Element', () => {
             const node = element.render();
             expect(node.childNodes).to.have.length(4);
             expect(node.children).to.have.length(3);
-            expect(node.innerHTML).to.be.equal('<span>Example text</span><em>Other text</em><em></em>This is some text');
+            expect(node.innerHTML).to.be.equal('<span>Example text</span>' +
+                '<em>Other text</em><em></em>This is some text');
         }
     });
 
@@ -195,7 +196,8 @@ describe('Element', () => {
             const node = element.render();
             expect(node.childNodes).to.have.length(4);
             expect(node.children).to.have.length(3);
-            expect(node.innerHTML).to.be.equal('<span>Example text</span><em>Other text</em><em></em>This is some text');
+            expect(node.innerHTML).to.be.equal('<span>Example text</span>' +
+                '<em>Other text</em><em></em>This is some text');
         }
         {
             const child = new Element();

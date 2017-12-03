@@ -18,6 +18,7 @@
       "error",
       120
     ],
-    "class-methods-use-this": "warn"
+    "class-methods-use-this": "warn",
+    "function-paren-newline": "off"
   }
 }

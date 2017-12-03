@@ -5,13 +5,18 @@
  * @param {string|object|Element|Array<string|Element>} [childrenOrAttributes] Attributes map or element(s).
  * @param {string|Element|Array<string|Element>} [children] Element(s) if not passed as second argument.
  */
+import Component from '../components/component';
+
 export default class Element {
     constructor(name = 'div', childrenOrAttributes, children) {
         this.name = name;
         this.attributes = {};
         this.children = [];
 
-        if (typeof childrenOrAttributes === 'string' || childrenOrAttributes instanceof Element) {
+        if (typeof childrenOrAttributes === 'string' ||
+            childrenOrAttributes instanceof Element ||
+            childrenOrAttributes instanceof Component
+        ) {
             this.children = [childrenOrAttributes];
         } else if (Array.isArray(childrenOrAttributes)) {
             this.children = childrenOrAttributes;
@@ -34,7 +39,7 @@ export default class Element {
         this.children.forEach((child) => {
             if (typeof child === 'string') {
                 element.appendChild(document.createTextNode(child));
-            } else if (child instanceof Element) {
+            } else if (child instanceof Element || child instanceof Component) {
                 element.appendChild(child.render());
             }
         });

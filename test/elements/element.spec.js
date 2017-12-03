@@ -1,5 +1,17 @@
 import { expect } from 'chai';
 import Element from '../../src/elements/element';
+import Component from '../../src/components/component';
+
+class ComponentMock extends Component {
+    constructor() {
+        super();
+        this.element = document.createElement('div');
+    }
+
+    render() {
+        return this.element;
+    }
+}
 
 describe('Element', () => {
     it('is initiable', () => {
@@ -161,32 +173,55 @@ describe('Element', () => {
         }
     });
 
+    it('renders component passed to element', () => {
+        const component = new ComponentMock();
+        const element = new Element('div', component);
+        const node = element.render();
+        expect(node.childNodes).to.have.length(1);
+        expect(component.render().isSameNode(node.firstChild));
+    });
+
+    it('renders component and attributes passed to element', () => {
+        const component = new ComponentMock();
+        const element = new Element('div', {
+            href: '#test',
+            title: 'This is important link',
+        }, component);
+        const node = element.render();
+        expect(node.childNodes).to.have.length(1);
+        expect(component.render().isSameNode(node.firstChild));
+        expect(node.getAttribute('title')).to.be.equal('This is important link');
+        expect(node.getAttribute('href')).to.be.equal('#test');
+    });
+
     it('renders list of element and texts passed to element', () => {
         {
             const child1 = new Element('span');
             const child2 = new Element('em', 'Hello');
-            const element = new Element('div', [child1, 'This is text', child2]);
+            const child3 = new ComponentMock();
+            const element = new Element('div', [child1, 'This is text', child2, child3]);
             const node = element.render();
-            expect(node.childNodes).to.have.length(3);
-            expect(node.children).to.have.length(2);
-            expect(node.innerHTML).to.be.equal('<span></span>This is text<em>Hello</em>');
+            expect(node.childNodes).to.have.length(4);
+            expect(node.children).to.have.length(3);
+            expect(node.innerHTML).to.be.equal('<span></span>This is text<em>Hello</em><div></div>');
         }
         {
             const child1 = new Element('span', 'Example text');
             const child2 = new Element('em', 'Other text');
-            const child3 = new Element('em');
-            const element = new Element('div', [child1, child2, child3, 'This is some text']);
+            const child3 = new ComponentMock();
+            const child4 = new Element('em');
+            const element = new Element('div', [child1, child2, child3, child4, 'This is some text']);
             const node = element.render();
-            expect(node.childNodes).to.have.length(4);
-            expect(node.children).to.have.length(3);
+            expect(node.childNodes).to.have.length(5);
+            expect(node.children).to.have.length(4);
             expect(node.innerHTML).to.be.equal('<span>Example text</span>' +
-                '<em>Other text</em><em></em>This is some text');
+                '<em>Other text</em><div></div><em></em>This is some text');
         }
     });
 
     it('renders list of elements and texts and attributes passed to element', () => {
         {
-            const child1 = new Element('span', 'Example text');
+            const child1 = new ComponentMock();
             const child2 = new Element('em', 'Other text');
             const child3 = new Element('em');
             const element = new Element('div', {
@@ -196,8 +231,7 @@ describe('Element', () => {
             const node = element.render();
             expect(node.childNodes).to.have.length(4);
             expect(node.children).to.have.length(3);
-            expect(node.innerHTML).to.be.equal('<span>Example text</span>' +
-                '<em>Other text</em><em></em>This is some text');
+            expect(node.innerHTML).to.be.equal('<div></div><em>Other text</em><em></em>This is some text');
         }
         {
             const child = new Element();

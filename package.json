@@ -12,11 +12,12 @@
     "compile": "babel src/app.js -o dist/app.js --source-maps",
     "watch": "babel src/app.js -o dist/app.js -w --source-maps",
     "lint": "eslint --fix --ext js src/ test/",
-    "test": "mocha"
+    "test": "NODE_ENV=test mocha"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "babel-plugin-rewire": "^1.1.0",
     "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
     "eslint": "^4.12.1",

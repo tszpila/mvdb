@@ -5,7 +5,9 @@
   },
   "globals": {
     "describe": false,
-    "it": false
+    "it": false,
+    "before": false,
+    "after": false
   },
   "rules": {
     "indent": [
@@ -15,6 +17,7 @@
     "max-len": [
       "error",
       120
-    ]
+    ],
+    "class-methods-use-this": "warn"
   }
 }

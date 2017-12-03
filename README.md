@@ -47,16 +47,15 @@ npm test
 
 This will execute all suits inside tests directory.
 
-## Babel
+## Build
 
-Project is written in ES 2015+. It will require transpilation before
-can be run in every browser. To do so use:
+Project requires to be built to be used in a browser. To do so use:
 
 ```
 npm run compile
 ```
 
-This will transpile code into `dist` directory. You can also use watch
+This will build code into `dist` directory. You can also use watch
 command to automatically repeat this process on any code change.
 Just run watcher by typing:
 

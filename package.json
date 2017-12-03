@@ -9,8 +9,8 @@
   "private": true,
   "scripts": {
     "serve": "node index.js",
-    "compile": "babel src/app.js -o dist/app.js --source-maps",
-    "watch": "babel src/app.js -o dist/app.js -w --source-maps",
+    "compile": "webpack",
+    "watch": "webpack --watch",
     "lint": "eslint --fix --ext js src/ test/",
     "test": "NODE_ENV=test mocha"
   },
@@ -25,7 +25,8 @@
     "eslint-plugin-import": "^2.8.0",
     "jsdom": "^11.5.1",
     "jsdom-global": "^3.0.2",
-    "mocha": "^4.0.1"
+    "mocha": "^4.0.1",
+    "webpack": "^3.9.1"
   },
   "dependencies": {
     "express": "^4.16.2"

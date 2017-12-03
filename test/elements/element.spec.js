@@ -40,12 +40,12 @@ describe('Element', () => {
         {
             const element = new Element('div', 'This is example text');
             const node = element.render();
-            expect(node.innerText).to.be.equal('This is example text');
+            expect(node.innerHTML).to.be.equal('This is example text');
         }
         {
             const element = new Element('span', 'This is different text');
             const node = element.render();
-            expect(node.innerText).to.be.equal('This is different text');
+            expect(node.innerHTML).to.be.equal('This is different text');
         }
     });
 
@@ -56,7 +56,7 @@ describe('Element', () => {
                 id: 'my-div',
             });
             const node = element.render();
-            expect(node.innerText).to.be.equal('');
+            expect(node.innerHTML).to.be.equal('');
             expect(node.getAttribute('id')).to.be.equal('my-div');
             expect(node.classList).to.have.length(2);
             expect(node.classList.contains('class-1')).to.be.equal(true);
@@ -68,7 +68,7 @@ describe('Element', () => {
                 title: 'This is important link',
             });
             const node = element.render();
-            expect(node.innerText).to.be.equal('');
+            expect(node.innerHTML).to.be.equal('');
             expect(node.getAttribute('title')).to.be.equal('This is important link');
             expect(node.getAttribute('href')).to.be.equal('#test');
         }
@@ -77,7 +77,7 @@ describe('Element', () => {
                 'data-src': 'image.jpg',
             });
             const node = element.render();
-            expect(node.innerText).to.be.equal('');
+            expect(node.innerHTML).to.be.equal('');
             expect(node.getAttribute('data-src')).to.be.equal('image.jpg');
         }
         {
@@ -86,7 +86,7 @@ describe('Element', () => {
                 id: 'my-div',
             });
             const node = element.render();
-            expect(node.innerText).to.be.equal('');
+            expect(node.innerHTML).to.be.equal('');
             expect(node.getAttribute('id')).to.be.equal('my-div');
             expect(node.getAttribute('test')).to.be.equal('Test');
         }
@@ -99,7 +99,7 @@ describe('Element', () => {
                 title: 'This is important link',
             }, 'This is example text');
             const node = element.render();
-            expect(node.innerText).to.be.equal('This is example text');
+            expect(node.innerHTML).to.be.equal('This is example text');
             expect(node.getAttribute('title')).to.be.equal('This is important link');
             expect(node.getAttribute('href')).to.be.equal('#test');
         }
@@ -158,6 +158,52 @@ describe('Element', () => {
             expect(node.classList).to.have.length(2);
             expect(node.classList.contains('class-1')).to.be.equal(true);
             expect(node.classList.contains('class-2')).to.be.equal(true);
+        }
+    });
+
+    it('renders list of element and texts passed to element', () => {
+        {
+            const child1 = new Element('span');
+            const child2 = new Element('em', 'Hello');
+            const element = new Element('div', [child1, 'This is text', child2]);
+            const node = element.render();
+            expect(node.childNodes).to.have.length(3);
+            expect(node.children).to.have.length(2);
+            expect(node.innerHTML).to.be.equal('<span></span>This is text<em>Hello</em>');
+        }
+        {
+            const child1 = new Element('span', 'Example text');
+            const child2 = new Element('em', 'Other text');
+            const child3 = new Element('em');
+            const element = new Element('div', [child1, child2, child3, 'This is some text']);
+            const node = element.render();
+            expect(node.childNodes).to.have.length(4);
+            expect(node.children).to.have.length(3);
+            expect(node.innerHTML).to.be.equal('<span>Example text</span><em>Other text</em><em></em>This is some text');
+        }
+    });
+
+    it('renders list of elements and texts and attributes passed to element', () => {
+        {
+            const child1 = new Element('span', 'Example text');
+            const child2 = new Element('em', 'Other text');
+            const child3 = new Element('em');
+            const element = new Element('div', {
+                href: '#test',
+                title: 'This is important link',
+            }, [child1, child2, child3, 'This is some text']);
+            const node = element.render();
+            expect(node.childNodes).to.have.length(4);
+            expect(node.children).to.have.length(3);
+            expect(node.innerHTML).to.be.equal('<span>Example text</span><em>Other text</em><em></em>This is some text');
+        }
+        {
+            const child = new Element();
+            const element = new Element('div', {}, [child]);
+            const node = element.render();
+            expect(node.childNodes).to.have.length(1);
+            expect(node.children).to.have.length(1);
+            expect(node.innerHTML).to.be.equal('<div></div>');
         }
     });
 });

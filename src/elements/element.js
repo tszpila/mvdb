@@ -2,23 +2,27 @@
  * Base Element class, add abstraction to DOM nodes.
  *
  * @param {string} [name=div] Element (node) name.
- * @param {string|object|Element} [textChildOrAttributes] Text value or Element or attributes map.
- * @param {string|Element} [textOrChild] Text or Element if not passed as second argument.
+ * @param {string|object|Element|Array<string|Element>} [childrenOrAttributes] Attributes map or elements (can be single).
+ * @param {string|Element|Array<string|Element>} [children] Elements if not passed as second argument (can be single).
  */
 export default class Element {
-    constructor(name = 'div', textChildOrAttributes, textOrChild) {
+    constructor(name = 'div', childrenOrAttributes, children) {
         this.name = name;
-        if (typeof textChildOrAttributes === 'string') {
-            this.text = textChildOrAttributes;
-        } else if (textChildOrAttributes instanceof Element) {
-            this.child = textChildOrAttributes;
+        if (typeof childrenOrAttributes === 'string') {
+            this.text = childrenOrAttributes;
+        } else if (childrenOrAttributes instanceof Element) {
+            this.child = childrenOrAttributes;
+        } else if (Array.isArray(childrenOrAttributes)) {
+            this.children = childrenOrAttributes;
         } else {
-            if (textOrChild instanceof Element) {
-                this.child = textOrChild;
+            if (Array.isArray(children)) {
+                this.children = children;
+            } else if (children instanceof Element) {
+                this.child = children;
             } else {
-                this.text = textOrChild;
+                this.text = children;
             }
-            this.attributes = textChildOrAttributes;
+            this.attributes = childrenOrAttributes;
         }
     }
 
@@ -26,8 +30,17 @@ export default class Element {
         const element = document.createElement(this.name);
         if (this.child) {
             element.appendChild(this.child.render());
-        } else {
-            element.innerText = this.text || '';
+        } else if (this.text) {
+            element.appendChild(document.createTextNode(this.text));
+        }
+        if (this.children) {
+            this.children.forEach((child) => {
+                if (typeof child === 'string') {
+                    element.appendChild(document.createTextNode(child));
+                } else {
+                    element.appendChild(child.render());
+                }
+            });
         }
         if (this.attributes) {
             Object.keys(this.attributes).forEach((attribute) => {

@@ -7,6 +7,7 @@ describe('List Component', () => {
         const component = new List();
         expect(component).to.be.instanceof(List);
     });
+
     it('extends Component', () => {
         const component = new List();
         expect(component).to.be.instanceof(Component);
